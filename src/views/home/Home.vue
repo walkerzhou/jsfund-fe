@@ -30,12 +30,22 @@
     <Page :route-name="_routeName">
       <Grid ref="grid" :grid-option="gridOption" :query-data="queryData"></Grid>
     </Page>
+
+
+    <Modals :options="DetailModalOpt">
+      <Detail slot="content" ref="Detail" :data="DetailModalData" :close="doDetailClose" v-if="detailDataReady"></Detail>
+      <div slot="footer">
+        <Button type="ghost" @click="$refs.Detail.onClose()">关闭</Button>
+      </div>
+    </Modals>
+
+
   </div>
 </template>
 <script>
 import { PAGE_SIZE, BASE_URL, URLS } from '../../util/constant'
 import pageMixin from '@views/page_mixin.js'
-// import util from '../../util/common'
+import Detail from './Detail.vue'
 
 export default {
   mixins: [pageMixin],
@@ -43,6 +53,7 @@ export default {
     return {
       download_link: BASE_URL,
       dataReady: false,
+      detailDataReady: false,
       // 表格查询条件
       queryData: {
         page: 1,
@@ -249,6 +260,12 @@ export default {
           }
         ]
       },
+
+      DetailModalOpt: {
+        title: 'Tigerobo|搜国债',
+        isShow: false,
+        width: 600
+      },
       options: {}
     }
   },
@@ -270,11 +287,23 @@ export default {
       this.goSearch()
     },
     goDetail (row) {
+      this.DetailModalOpt.isShow = true
+      this.detailDataReady = true
+      this.DetailModalData = {
+        method: 'post',
+        data: row
+      }
+    },
+    doDetailClose () {
+      this.DetailModalOpt.isShow = false
+      this.detailDataReady = false
     },
     goMMSearch (row) {
     }
   },
-  components: {}
+  components: {
+    Detail
+  }
 }
 </script>
 <style>

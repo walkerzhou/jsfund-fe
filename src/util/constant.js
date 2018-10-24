@@ -8,5 +8,6 @@ export const oneDays = 86400000 // 一天时间毫秒数
 export const BASE_URL = 'http://localhost:8001/bond-manager/api'
 
 export const URLS = {
-  QUERY_BOND_LIST: '/query'
+  QUERY_BOND_LIST: '/query',
+  DETAIL_QUERY: '/detail'
 }
